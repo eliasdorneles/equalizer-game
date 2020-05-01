@@ -14,17 +14,14 @@ const connectEqualizerFilters = (source, bandFilters, destination) => {
   bandFilters[bandFilters.length - 1].connect(destination)
 }
 
-// main
-audio_file.onchange = function() {
-  audio_player.src = URL.createObjectURL(this.files[0])
-}
+const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
 
+// Main starts here
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
-const source = audioContext.createMediaElementSource(document.querySelector("audio"))
-
 const EQ_FREQUENCIES = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
 const bandFilters = EQ_FREQUENCIES.map((freq) => createBandFilter(audioContext, freq))
 
+const source = audioContext.createMediaElementSource(equalizedAudioPlayer)
 connectEqualizerFilters(source, bandFilters, audioContext.destination)
 
 const applyEqualization = (equalization) =>
@@ -36,18 +33,26 @@ const resetEqualization = () => applyEqualization(eqReset)
 const currentEqualization = [0, 0, 0, 0, 0, 12, 0, -12, 0, 0, 0]
 
 // UI stuff
-const buttonListenEq = document.getElementById('listen-eq-version')
-const buttonListenOriginal = document.getElementById('listen-original')
+audioFileSelector.onchange = function(){
+  // this needs to be written with function() syntax in order to have this
+  const file = this.files[0]
+  equalizedAudioPlayer.src = URL.createObjectURL(file)
+  uiAudioSourceName.textContent = file.name
+  audioFileSelector.classList.add("d-none")
+}
 
 const handleClickListenEQVersion = () => {
   applyEqualization(currentEqualization)
-  buttonListenEq.classList.add('d-none')
-  buttonListenOriginal.classList.remove('d-none')
+  buttonListenEq.classList.add("d-none")
+  buttonListenOriginal.classList.remove("d-none")
 }
 
 const handleClickListenOriginal = () => {
   resetEqualization()
-  buttonListenEq.classList.remove('d-none')
-  buttonListenOriginal.classList.add('d-none')
+  buttonListenEq.classList.remove("d-none")
+  buttonListenOriginal.classList.add("d-none")
 }
 
+const handleClickButtonChangeAudio = () => {
+  audioFileSelector.classList.remove("d-none")
+}

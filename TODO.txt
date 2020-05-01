@@ -1,14 +1,17 @@
-[ ] Add an audio player element that plays something in loop
-    [ ] should let you play/pause
-    [ ] nice-to-have: ideally, control the volume
-    [ ] nice-to-have: ideally, display the time and have a cursor to skip?
-[ ] Add a button that applies / unapplies an equalization array
+[x] Add an audio player element that plays something in loop
+    [x] should let you play/pause
+    [x] nice-to-have: ideally, control the volume
+    [x] nice-to-have: ideally, display the time and have a cursor to skip?
+[x] Add a button that applies / unapplies an equalization array
     - the equalization array will look like: [0, 0, 0, 0, 0, -12, 0, -12, 0, 12]
+[x] Let user upload the audio file
+[x] Clean UI: hide the option to upload audio file by default
 [ ] Add a quiz for the correct equalization
 [ ] Add an option to generate a new equalization
+[ ] Let user select between a few presets
+    [ ] have a White Noise preset
+[ ] Track answers score
+    (save in localStorage)
 [ ] Design advanced modes
     [ ] mode "fix the equalization so that it matches the original"
     [ ] mode "identify which knobs were pushed"
-[ ] Let user select between a few presets
-    [ ] have a White Noise preset
-[ ] Let user upload the audio file

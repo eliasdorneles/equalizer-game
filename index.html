@@ -4,54 +4,39 @@
         <meta charset="UTF-8" />
         <title>Equalizer Game</title>
         <link rel="stylesheet" href="bootstrap.min.css" />
-        <!-- TODO: do i really need jQuery...? -->
-        <script
-            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"
-        ></script>
-        <script src="bootstrap.min.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Equalizer Game</a>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarColor01"
-                aria-controls="navbarColor01"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#"
-                            >Start <span class="sr-only">(current)</span></a
-                        >
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-            </div>
+            <a class="navbar-brand" href="/">Equalizer Game</a>
         </nav>
 
         <div class="container">
-            <div id="select-audio-file">
-                <input id="audio_file" type="file" accept="audio/*" />
+            <div class="audio-source">
+                Audio: <strong id="uiAudioSourceName">default</strong>
+                <button class="btn btn-link btn-sm" onclick="handleClickButtonChangeAudio()">
+                    click here to change
+                </button>
+                <input id="audioFileSelector" type="file" accept="audio/*" class="d-none" />
             </div>
+
             <div>
-                <audio id="audio_player" src="library/twein.mp3" controls loop>
+                <audio id="equalizedAudioPlayer" src="library/twein.mp3" controls loop>
                     <p>Your browser doesn't support HTML5 audio, the game won't work =(</p>
                 </audio>
             </div>
-            <button class="btn btn-success" id="listen-eq-version" onclick="handleClickListenEQVersion()">Listen to the EQ-version</button>
-            <button class="btn btn-default d-none" id="listen-original" onclick="handleClickListenOriginal()">
+
+            <button
+                class="btn btn-success"
+                id="buttonListenEq"
+                onclick="handleClickListenEQVersion()"
+            >
+                Listen to the EQ-version
+            </button>
+            <button
+                class="btn btn-default d-none"
+                id="buttonListenOriginal"
+                onclick="handleClickListenOriginal()"
+            >
                 Listen to the original
             </button>
         </div>
