@@ -1,4 +1,4 @@
-const createBandFilter = (freq) => {
+const createBandFilter = (context, freq) => {
   const filter = context.createBiquadFilter()
   filter.type = "peaking"
   filter.frequency.value = freq
@@ -20,12 +20,34 @@ audio_file.onchange = function() {
 }
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
-const source = context.createMediaElementSource(document.querySelector("audio"))
+const source = audioContext.createMediaElementSource(document.querySelector("audio"))
 
-const eqFrequencies = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
-const bandFilters = eqFrequencies.map(createBandFilter)
+const EQ_FREQUENCIES = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
+const bandFilters = EQ_FREQUENCIES.map((freq) => createBandFilter(audioContext, freq))
 
 connectEqualizerFilters(source, bandFilters, audioContext.destination)
 
-bandFilters[5].gain.value = 12
-bandFilters[7].gain.value = -12
+const applyEqualization = (equalization) =>
+  bandFilters.forEach((filter, i) => (filter.gain.value = equalization[i]))
+
+const eqReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+const resetEqualization = () => applyEqualization(eqReset)
+
+const currentEqualization = [0, 0, 0, 0, 0, 12, 0, -12, 0, 0, 0]
+
+// UI stuff
+const buttonListenEq = document.getElementById('listen-eq-version')
+const buttonListenOriginal = document.getElementById('listen-original')
+
+const handleClickListenEQVersion = () => {
+  applyEqualization(currentEqualization)
+  buttonListenEq.classList.add('d-none')
+  buttonListenOriginal.classList.remove('d-none')
+}
+
+const handleClickListenOriginal = () => {
+  resetEqualization()
+  buttonListenEq.classList.remove('d-none')
+  buttonListenOriginal.classList.add('d-none')
+}
+

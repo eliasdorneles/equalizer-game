@@ -45,9 +45,15 @@
             <div id="select-audio-file">
                 <input id="audio_file" type="file" accept="audio/*" />
             </div>
-            <audio id="audio_player" src="library/twein.mp3" controls loop>
-                <p>Your browser doesn't support HTML5 audio, the game won't work =(</p>
-            </audio>
+            <div>
+                <audio id="audio_player" src="library/twein.mp3" controls loop>
+                    <p>Your browser doesn't support HTML5 audio, the game won't work =(</p>
+                </audio>
+            </div>
+            <button class="btn btn-success" id="listen-eq-version" onclick="handleClickListenEQVersion()">Listen to the EQ-version</button>
+            <button class="btn btn-default d-none" id="listen-original" onclick="handleClickListenOriginal()">
+                Listen to the original
+            </button>
         </div>
         <script src="main.js"></script>
     </body>
