@@ -1,0 +1,13 @@
+.quiz-options {
+  margin: 1em;
+}
+
+.svg-equalizer {
+  margin: 0.5em;
+  border: 1px solid #808080;
+  border-radius: 3px;
+}
+
+.svg-equalizer:hover {
+  border-color: #faa123;
+}

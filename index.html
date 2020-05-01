@@ -4,15 +4,18 @@
         <meta charset="UTF-8" />
         <title>Equalizer Game</title>
         <link rel="stylesheet" href="bootstrap.min.css" />
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">Equalizer Game</a>
+            <div class="container">
+                <a class="navbar-brand" href="/">Equalizer Game</a>
+            </div>
         </nav>
 
         <div class="container">
             <div class="audio-source">
-                Audio: <strong id="uiAudioSourceName">default</strong>
+                Audio: <strong id="uiAudioSourceName">twein.mp3</strong>
                 <button class="btn btn-link btn-sm" onclick="handleClickButtonChangeAudio()">
                     click here to change
                 </button>
@@ -39,6 +42,13 @@
             >
                 Listen to the original
             </button>
+            <div class="quiz-options">
+                <p>Can you tell which equalizer is being applied?</p>
+                <object class="svg-equalizer" data="equalizer.svg" type="image/svg+xml"></object>
+                <object class="svg-equalizer" data="equalizer.svg" type="image/svg+xml"></object>
+                <object class="svg-equalizer" data="equalizer.svg" type="image/svg+xml"></object>
+                <object class="svg-equalizer" data="equalizer.svg" type="image/svg+xml"></object>
+            </div>
         </div>
         <script src="main.js"></script>
     </body>
