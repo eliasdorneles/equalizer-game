@@ -6,12 +6,20 @@
     - the equalization array will look like: [0, 0, 0, 0, 0, -12, 0, -12, 0, 12]
 [x] Let user upload the audio file
 [x] Clean UI: hide the option to upload audio file by default
-[ ] Add a quiz for the correct equalization
+[o] Add a quiz for the correct equalization
+    [x] mock-up displaying an equalization in the screen
+    [x] generate alternative equalizations, from modified versions of the current one
+    [x] display question with the options in the UI
+    [ ] when the user answer:
+        [ ] tell them if they got it right or not
+    [ ] Display an score
+        [ ] increase the score when they got it right
+        [ ] count attempts and right answers
 [ ] Add an option to generate a new equalization
 [ ] Let user select between a few presets
     [ ] have a White Noise preset
-[ ] Track answers score
-    (save in localStorage)
+[ ] Display the waveform with wavesurfer-js
+[ ] Save answers score locally, so that we don't lose it on refresh
 [ ] Design advanced modes
     [ ] mode "fix the equalization so that it matches the original"
     [ ] mode "identify which knobs were pushed"
