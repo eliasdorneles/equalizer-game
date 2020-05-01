@@ -61,7 +61,7 @@ def draw_equalizer():
         gain = 0
         y_pos = position_zero - gain * (height_band_filter / 2 / 12) - 5
         print(f"""
-          <rect id="band-filter-{i + 1}" x="{x + 2}" y="{y_pos}" width="{18}" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-{i + 1}" class="band-filter" x="{x + 2}" y="{y_pos}" width="{18}" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           """)
 
     print(f"""

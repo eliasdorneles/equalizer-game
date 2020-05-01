@@ -85,34 +85,34 @@
       <line x1="22" x2="220" y1="67.0" y2="67.0" stroke="#efefef" stroke-width="1"  stroke-dasharray="6,2" />
     
 
-          <rect id="band-filter-1" x="22" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-1" class="band-filter" x="22" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-2" x="42" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-2" class="band-filter" x="42" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-3" x="62" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-3" class="band-filter" x="62" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-4" x="82" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-4" class="band-filter" x="82" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-5" x="102" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-5" class="band-filter" x="102" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-6" x="122" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-6" class="band-filter" x="122" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-7" x="142" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-7" class="band-filter" x="142" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-8" x="162" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-8" class="band-filter" x="162" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-9" x="182" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-9" class="band-filter" x="182" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
-          <rect id="band-filter-10" x="202" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
+          <rect id="band-filter-10" class="band-filter" x="202" y="62.0" width="18" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           
 
     </svg>
