@@ -46,15 +46,15 @@ const generateAlternative = (givenEq) => {
 const generateAlternativeEqualizations = (givenEq) => {
   // here we generate three other equalizations a few edits distant of the given one
   let candidates = [
-    generateAlternative(givenEq),
-    generateAlternative(givenEq),
+    generateAlternative(eqReset),
+    generateAlternative(eqReset),
     generateAlternative(givenEq),
   ]
-  const areAllCandidatesDifferent = () => !(isSameEqualization(candidates[0], candidates[1]) || isSameEqualization(candidates[0], candidates[2]))
+  const areAllCandidatesDifferent = () => !(isSameEqualization(candidates[0], candidates[1]) || isSameEqualization(candidates[0], candidates[2]) || isSameEqualization(candidates[0], givenEq))
   while(!areAllCandidatesDifferent()) {
     candidates = [
-      generateAlternative(givenEq),
-      generateAlternative(givenEq),
+      generateAlternative(eqReset),
+      generateAlternative(eqReset),
       generateAlternative(givenEq),
     ]
   }
@@ -72,8 +72,21 @@ const displayEqualization = (svgObject, equalization) => {
   equalization.forEach((level, index) => {
     const sliderKnob = svgDocument.getElementById(`band-filter-${index + 1}`)
     sliderKnob.setAttribute("y", calcSliderPosition(level).toString())
+    // here we add the level as data attribute to the slider, so that we can later recover
+    sliderKnob.setAttribute("data-level", level)
   },
   )
+}
+
+const newGame = () => {
+  const equalizationBase = generateAlternative(eqReset)
+  const alternatives = generateAlternativeEqualizations(equalizationBase)
+  alternatives.push(equalizationBase)
+  alternatives.sort(() => Math.random() - 0.5) // shuffle
+  return {
+    currentEqualization: equalizationBase,
+    quizEqualizationOptions: alternatives
+  }
 }
 
 // Main starts here
@@ -84,16 +97,12 @@ const bandFilters = EQ_FREQUENCIES.map((freq) => createBandFilter(audioContext, 
 const source = audioContext.createMediaElementSource(equalizedAudioPlayer)
 connectEqualizerFilters(source, bandFilters, audioContext.destination)
 
-const applyEqualization = (equalization) =>
+const applyEqualizationToAudio = (equalization) =>
   bandFilters.forEach((filter, i) => (filter.gain.value = equalization[i]))
 
-const eqReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+const eqReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-const currentEqualization = [0, 0, 0, 0, 0, 12, 0, -12, 0, 0]
-
-const quizEqualizationOptions = generateAlternativeEqualizations(currentEqualization)
-quizEqualizationOptions.push(currentEqualization)
-quizEqualizationOptions.sort(() => Math.random() - 0.5) // shuffle
+let game = newGame()
 
 // UI stuff
 audioFileSelector.onchange = function() {
@@ -105,13 +114,13 @@ audioFileSelector.onchange = function() {
 }
 
 const handleClickListenEQVersion = () => {
-  applyEqualization(currentEqualization)
+  applyEqualizationToAudio(game.currentEqualization)
   buttonListenEq.classList.add("d-none")
   buttonListenOriginal.classList.remove("d-none")
 }
 
 const handleClickListenOriginal = () => {
-  applyEqualization(eqReset)
+  applyEqualizationToAudio(eqReset)
   buttonListenEq.classList.remove("d-none")
   buttonListenOriginal.classList.add("d-none")
 }
@@ -120,10 +129,23 @@ const handleClickButtonChangeAudio = () => {
   audioFileSelector.classList.remove("d-none")
 }
 
+const handleClickSvgDocument = (svgDocument) => {
+  const eqClicked = Array.from(svgDocument.getElementsByClassName('band-filter')).map(x => parseInt(x.dataset.level))
+  if (isSameEqualization(game.currentEqualization, eqClicked)) {
+    console.log('Congrats! You did it!', eqClicked)
+  } else {
+    console.log("Oops! That's not it! Try again")
+  }
+}
+
 const svgObjects = document.getElementsByTagName('object')
 for(let i = 0; i < svgObjects.length ;i++) {
-  const equalization = quizEqualizationOptions[i]
+  const equalization = game.quizEqualizationOptions[i]
   svgObjects[i].addEventListener('load', function(){
     displayEqualization(this, equalization)
+    const svgDoc = svgObjects[i].getSVGDocument()
+    svgDoc.addEventListener('click', function(){
+      handleClickSvgDocument(this)
+    })
   })
 }
