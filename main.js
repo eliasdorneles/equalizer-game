@@ -189,18 +189,18 @@ const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
     obj.classList.add("d-none")
   })
 
-  setUIMessageEq1("You answered:")
+  setUIMessageEq1("The correct one is:")
   const eq1 = svgObjects[0]
-  displayEqualization(eq1.getSVGDocument(), guessedEqualization)
-  eq1.classList.add('svg-equalizer-incorrect')
+  displayEqualization(eq1.getSVGDocument(), game.currentEqualization)
+  eq1.classList.add('svg-equalizer-correct')
   eq1.classList.remove('d-none')
-  setAdditionalButtons(`<button class="btn btn-sm btn-outline-warning" onclick="applyEqualizationToAudio(${JSON.stringify(guessedEqualization)})">Listen your answer</button>`)
 
-  setUIMessageEq2("The correct one is:")
+  setUIMessageEq2("You answered:")
   const eq2 = svgObjects[1]
-  displayEqualization(eq2.getSVGDocument(), game.currentEqualization)
-  eq2.classList.add('svg-equalizer-correct')
+  displayEqualization(eq2.getSVGDocument(), guessedEqualization)
+  eq2.classList.add('svg-equalizer-incorrect')
   eq2.classList.remove('d-none')
+  setAdditionalButtons(`<button class="btn btn-sm btn-outline-warning" onclick="applyEqualizationToAudio(${JSON.stringify(guessedEqualization)})">Listen your answer</button>`)
 }
 
 const handleClickAnswer = (svgDocument, index) => {
