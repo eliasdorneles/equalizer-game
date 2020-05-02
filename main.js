@@ -184,16 +184,16 @@ const handleClickSvgDocument = (svgDocument, index) => {
 
 // The equalizer is made to look clickable relying on CSS classes for the
 // <object> element to add border and :hover,  and the cursor is made "pointer"
-// with a CSS class for a transparent <rect /> put in the SVG for this specific purpose
+// with a CSS class for the <g /> element containing all elements
 const addClickableLook = (index) => {
   svgObjects[index].classList.add("svg-equalizer-clickable")
   svgDocument = svgObjects[index].getSVGDocument()
-  svgDocument.getElementById("clickable-mask").classList.add("clickable")
+  svgDocument.getElementById("eq-container").classList.add("clickable")
 }
 const removeClickableLook = (index) => {
   svgObjects[index].classList.remove("svg-equalizer-clickable")
   svgDocument = svgObjects[index].getSVGDocument()
-  svgDocument.getElementById("clickable-mask").classList.remove("clickable")
+  svgDocument.getElementById("eq-container").classList.remove("clickable")
 }
 
 const initSvgDocument = (svgDocument, index) => {
