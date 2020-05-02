@@ -4,10 +4,13 @@
 
 .svg-equalizer {
   margin: 0.5em;
+}
+
+.svg-equalizer-clickable {
   border: 1px solid #808080;
   border-radius: 3px;
 }
 
-.svg-equalizer:hover {
+.svg-equalizer-clickable:hover {
   border-color: #faa123;
 }
