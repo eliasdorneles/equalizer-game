@@ -90,6 +90,11 @@ const getEqualizationFromSvgDocument = (svgDocument) =>
     parseInt(x.dataset.level),
   )
 
+const GameStates = {
+  PLAYING: "PLAYING",
+  PAUSED: "PAUSED",
+}
+
 const generateNewGame = () => {
   const equalizationBase = generateAlternative(eqReset)
   const alternatives = generateAlternativeEqualizations(equalizationBase)
@@ -98,6 +103,7 @@ const generateNewGame = () => {
   return {
     currentEqualization: equalizationBase,
     quizEqualizationOptions: alternatives,
+    state: GameStates.PLAYING,
   }
 }
 
@@ -152,14 +158,18 @@ audioFileSelector.onchange = () => {
 
 const handleClickListenEQVersion = () => {
   applyEqualizationToAudio(game.currentEqualization)
-  buttonListenEq.classList.add("d-none")
+  if (game.state !== GameStates.PAUSED) {
+    buttonListenEq.classList.add("d-none")
+  }
   buttonListenOriginal.classList.remove("d-none")
 }
 
 const handleClickListenOriginal = () => {
   applyEqualizationToAudio(eqReset)
   buttonListenEq.classList.remove("d-none")
-  buttonListenOriginal.classList.add("d-none")
+  if (game.state !== GameStates.PAUSED) {
+    buttonListenOriginal.classList.add("d-none")
+  }
 }
 
 const handleClickButtonChangeAudio = () => {
@@ -191,18 +201,25 @@ const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
     obj.classList.add("d-none")
   })
 
+  buttonListenOriginal.classList.remove("d-none")
+  buttonListenEq.classList.remove("d-none")
+
   setUIMessageEq1("The correct one is:")
   const eq1 = svgObjects[0]
   displayEqualization(eq1.getSVGDocument(), game.currentEqualization)
-  eq1.classList.add('svg-equalizer-correct')
-  eq1.classList.remove('d-none')
+  eq1.classList.add("svg-equalizer-correct")
+  eq1.classList.remove("d-none")
 
   setUIMessageEq2("You answered:")
   const eq2 = svgObjects[1]
   displayEqualization(eq2.getSVGDocument(), guessedEqualization)
-  eq2.classList.add('svg-equalizer-incorrect')
-  eq2.classList.remove('d-none')
-  setAdditionalButtons(`<button class="btn btn-sm btn-outline-warning" onclick="applyEqualizationToAudio(${JSON.stringify(guessedEqualization)})">Listen your answer</button>`)
+  eq2.classList.add("svg-equalizer-incorrect")
+  eq2.classList.remove("d-none")
+  setAdditionalButtons(
+    `<button class="btn btn-sm btn-outline-warning" onclick="applyEqualizationToAudio(${JSON.stringify(
+      guessedEqualization,
+    )})">Listen your answer</button>`,
+  )
 }
 
 const handleClickAnswer = (svgDocument, index) => {
@@ -212,7 +229,8 @@ const handleClickAnswer = (svgDocument, index) => {
   } else {
     handleIncorrectAnswer(index, eqClicked)
   }
-  buttonNewGame.classList.remove('d-none')
+  game.state = GameStates.PAUSED
+  buttonNewGame.classList.remove("d-none")
 }
 
 // The equalizer is made to look clickable relying on CSS classes for the
@@ -248,7 +266,7 @@ const newGame = () => {
     setUIMessageEq1("")
     setUIMessageEq2("")
     setAdditionalButtons("")
-    buttonNewGame.classList.add('d-none')
+    buttonNewGame.classList.add("d-none")
     setUIMessage("Can you tell which equalizer is being applied?")
   })
 }
