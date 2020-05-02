@@ -88,7 +88,7 @@ const getEqualizationFromSvgDocument = (svgDocument) =>
     parseInt(x.dataset.level),
   )
 
-const newGame = () => {
+const generateNewGame = () => {
   const equalizationBase = generateAlternative(eqReset)
   const alternatives = generateAlternativeEqualizations(equalizationBase)
   alternatives.push(equalizationBase)
@@ -138,7 +138,7 @@ const applyEqualizationToAudio = (equalization) =>
 
 const eqReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-let game = newGame()
+let game = generateNewGame()
 
 // UI stuff
 audioFileSelector.onchange = () => {
@@ -165,20 +165,48 @@ const handleClickButtonChangeAudio = () => {
 }
 
 const setUIMessage = (message) => (quizUIMessage.innerHTML = message)
+const setUIMessageEq1 = (message) => (uiMessageEq1.innerHTML = message)
+const setUIMessageEq2 = (message) => (uiMessageEq2.innerHTML = message)
+
+const handleCorrectAnswer = (indexAnswer) => {
+  setUIMessage('<strong class="text-success">Congrats! You did it!</strong>')
+  svgObjects.forEach((obj, i) => {
+    removeAllListeners(obj.getSVGDocument(), "click")
+    removeClickableLook(i)
+    if (i !== indexAnswer) {
+      obj.classList.add("d-none")
+    }
+  })
+}
+
+const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
+  setUIMessage("<span class='text-danger'>Oops! That's not it!</span>")
+  svgObjects.forEach((obj, i) => {
+    const svgDoc = obj.getSVGDocument()
+    removeAllListeners(svgDoc, "click")
+    removeClickableLook(i)
+    obj.classList.add("d-none")
+  })
+
+  setUIMessageEq1("You answered:")
+  const eq1 = svgObjects[0]
+  displayEqualization(eq1.getSVGDocument(), guessedEqualization)
+  eq1.classList.add('svg-equalizer-incorrect')
+  eq1.classList.remove('d-none')
+
+  setUIMessageEq2("The correct one is:")
+  const eq2 = svgObjects[1]
+  displayEqualization(eq2.getSVGDocument(), game.currentEqualization)
+  eq2.classList.add('svg-equalizer-correct')
+  eq2.classList.remove('d-none')
+}
 
 const handleClickSvgDocument = (svgDocument, index) => {
   const eqClicked = getEqualizationFromSvgDocument(svgDocument)
   if (isEqualizationEqual(game.currentEqualization, eqClicked)) {
-    setUIMessage('<strong class="text-success">Congrats! You did it!</strong>')
-    svgObjects.forEach((obj, i) => {
-      removeAllListeners(obj.getSVGDocument(), "click")
-      removeClickableLook(i)
-      if (i !== index) {
-        obj.classList.add("d-none")
-      }
-    })
+    handleCorrectAnswer(index)
   } else {
-    setUIMessage("<span class='text-danger'>Oops! That's not it! Try again</span>")
+    handleIncorrectAnswer(index, eqClicked)
   }
 }
 
@@ -196,14 +224,25 @@ const removeClickableLook = (index) => {
   svgDocument.getElementById("eq-container").classList.remove("clickable")
 }
 
-const initSvgDocument = (svgDocument, index) => {
+const initSvgEqualizer = (svgDocument, index) => {
   const equalization = game.quizEqualizationOptions[index]
   displayEqualization(svgDocument, equalization)
   addClickableLook(index)
   addListener(svgDocument, "click", () => handleClickSvgDocument(svgDocument, index))
 }
 
+const newGame = () => {
+  game = generateNewGame()
+  svgObjects.forEach((obj, i) => {
+    initSvgEqualizer(obj.getSVGDocument(), i)
+    obj.classList.remove("d-none")
+    obj.classList.remove("svg-equalizer-incorrect")
+    obj.classList.remove("svg-equalizer-correct")
+    setUIMessage("Can you tell which equalizer is being applied?")
+  })
+}
+
 const svgObjects = Array.from(document.getElementsByTagName("object"))
 svgObjects.forEach((obj, i) =>
-  obj.addEventListener("load", () => initSvgDocument(obj.getSVGDocument(), i)),
+  obj.addEventListener("load", () => initSvgEqualizer(obj.getSVGDocument(), i)),
 )
