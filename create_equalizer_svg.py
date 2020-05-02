@@ -38,7 +38,7 @@ def draw_equalizer():
     """)
 
     # TODO: it would be best to do this programatically from JS
-    print('<style> svg { cursor: pointer; }</style>')
+    print('<style> .clickable { cursor: pointer; }</style>')
 
     for i, (freq, unit) in enumerate(frequencies):
         band_filter(i * 20 + 20, freq, unit)
@@ -64,6 +64,7 @@ def draw_equalizer():
           <rect id="band-filter-{i + 1}" class="band-filter" x="{x + 2}" y="{y_pos}" width="{18}" height="10" fill="#bbc42a" stroke-width="0.5" stroke="#3b5400" />
           """)
 
+    print(f'<rect id="clickable-mask" x="0" y="0" width="{width_eq}" height="{height_eq}" class="clickable" fill-opacity="0" />')
     print(f"""
     </svg>
     """)
