@@ -15,15 +15,18 @@
 
         <div class="container">
             <div class="audio-source">
-                Audio: <strong id="uiAudioSourceName">twein.mp3</strong>
+                Audio: <strong id="uiAudioSourceTitle"></strong>
                 <button class="btn btn-link btn-sm" onclick="handleClickButtonChangeAudio()">
-                    (click here to upload your own audio)
+                  (click here to change audio)
                 </button>
-                <input id="audioFileSelector" type="file" accept="audio/*" class="d-none" />
+
+                <div id="audioSelectionContainer" class="d-none">
+                  <input id="audioFileSelector" type="file" accept="audio/*" />
+                </div>
             </div>
 
             <div>
-                <audio id="equalizedAudioPlayer" src="library/twein.mp3" controls loop>
+                <audio id="equalizedAudioPlayer" controls loop>
                     <p>Your browser doesn't support HTML5 audio, the game won't work =(</p>
                 </audio>
             </div>

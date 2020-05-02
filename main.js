@@ -107,6 +107,28 @@ const generateNewGame = () => {
   }
 }
 
+const audioLibrary = [
+  {
+    file: "library/NiGiD_-_Funk_to_Blame.mp3",
+    description: "A funky track with drums, bass and guitars",
+    title:
+    '<a href="http://dig.ccmixter.org/files/NiGiD/58126">Funk to Blame</a> by <a href="http://beta.ccmixter.org/people/NiGiD">Martijn de Boer (NiGiD)</a><p><small>(c) 2018 Licensed under a Creative Commons (CC BY-NC 3.0) license. Ft: unreal_dm</small></p>',
+  },
+  {
+    file: "library/magnatune_-_zargon_-_It_s_Alive_Below.mp3",
+    title:
+      '<strong>It\'s Alive Below</strong>, by <a href="http://beta.ccmixter.org/people/zargon">SoLaRiS</a>',
+    description: "A wild and heavy remix",
+    title: `<a href="http://dig.ccmixter.org/files/zargon/1875">It's Alive Below</a> by <a href="http://beta.ccmixter.org/people/zargon">SoLaRiS</a><p><small>(c) 2005 Licensed under a Creative Commons (CC BY-NC 2.5) license.</small></p>`,
+  },
+  {
+    file: "library/white_noise.wav",
+    title: "White noise",
+    description:
+      "This is computer-generated <a href='https://en.wikipedia.org/wiki/White_noise'>white noise</a>, it's a good place to begin because you hear all frequencies",
+  },
+]
+
 // EVENT ADDING/REMOVING HELPERS (adapted from: https://stackoverflow.com/a/4386514/149872)
 const _eventHandlers = {}
 
@@ -149,11 +171,18 @@ const eqReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 let game = generateNewGame()
 
 // UI stuff
+const selectAudio = (audio) => {
+  equalizedAudioPlayer.src = audio.file
+  uiAudioSourceTitle.innerHTML = audio.title
+  audioSelectionContainer.classList.add("d-none")
+}
+
 audioFileSelector.onchange = () => {
   const file = audioFileSelector.files[0]
-  equalizedAudioPlayer.src = URL.createObjectURL(file)
-  uiAudioSourceName.textContent = file.name
-  audioFileSelector.classList.add("d-none")
+  selectAudio({
+    file: URL.createObjectURL(file),
+    title: file.name,
+  })
 }
 
 const handleClickListenEQVersion = () => {
@@ -173,8 +202,10 @@ const handleClickListenOriginal = () => {
 }
 
 const handleClickButtonChangeAudio = () => {
-  audioFileSelector.classList.remove("d-none")
+  audioSelectionContainer.classList.remove("d-none")
 }
+
+selectAudio(audioLibrary[0])
 
 const setUIMessage = (message) => (quizUIMessage.innerHTML = message)
 const setUIMessageEq1 = (message) => (uiMessageEq1.innerHTML = message)
