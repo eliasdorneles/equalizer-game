@@ -169,7 +169,7 @@ const setUIMessageEq1 = (message) => (uiMessageEq1.innerHTML = message)
 const setUIMessageEq2 = (message) => (uiMessageEq2.innerHTML = message)
 
 const handleCorrectAnswer = (indexAnswer) => {
-  setUIMessage('<strong class="text-success">Congrats! You did it!</strong>')
+  setUIMessage('<strong class="text-success">You got it right!</strong>')
   svgObjects.forEach((obj, i) => {
     removeAllListeners(obj.getSVGDocument(), "click")
     removeClickableLook(i)
@@ -201,13 +201,14 @@ const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
   eq2.classList.remove('d-none')
 }
 
-const handleClickSvgDocument = (svgDocument, index) => {
+const handleClickAnswer = (svgDocument, index) => {
   const eqClicked = getEqualizationFromSvgDocument(svgDocument)
   if (isEqualizationEqual(game.currentEqualization, eqClicked)) {
     handleCorrectAnswer(index)
   } else {
     handleIncorrectAnswer(index, eqClicked)
   }
+  buttonNewGame.classList.remove('d-none')
 }
 
 // The equalizer is made to look clickable relying on CSS classes for the
@@ -228,16 +229,20 @@ const initSvgEqualizer = (svgDocument, index) => {
   const equalization = game.quizEqualizationOptions[index]
   displayEqualization(svgDocument, equalization)
   addClickableLook(index)
-  addListener(svgDocument, "click", () => handleClickSvgDocument(svgDocument, index))
+  addListener(svgDocument, "click", () => handleClickAnswer(svgDocument, index))
 }
 
 const newGame = () => {
   game = generateNewGame()
   svgObjects.forEach((obj, i) => {
     initSvgEqualizer(obj.getSVGDocument(), i)
+    // reset the UI
     obj.classList.remove("d-none")
     obj.classList.remove("svg-equalizer-incorrect")
     obj.classList.remove("svg-equalizer-correct")
+    setUIMessageEq1("")
+    setUIMessageEq2("")
+    buttonNewGame.classList.add('d-none')
     setUIMessage("Can you tell which equalizer is being applied?")
   })
 }
