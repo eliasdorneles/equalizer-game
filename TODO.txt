@@ -10,12 +10,17 @@
     [x] mock-up displaying an equalization in the screen
     [x] generate alternative equalizations, from modified versions of the current one
     [x] display question with the options in the UI
-    [ ] when the user answer:
-        [ ] tell them if they got it right or not
+    [x] if the user answer correctly:
+        [x] tell them they got it right
+        [x] hide all other equalizations, displaying the correct one
+    [o] if the user answer incorrectly:
+        [x] tell them that's not the right one
+        [x] display the correct one, and their choice
+        [x] let them switch between listening to the original, the correct one and their answer
     [ ] Display an score
         [ ] increase the score when they got it right
         [ ] count attempts and right answers
-[ ] Add an option to generate a new equalization
+[x] Add an option to generate a new equalization
 [ ] Let user select between a few presets
     [ ] have a White Noise preset
 [ ] Display the waveform with wavesurfer-js
@@ -23,3 +28,4 @@
 [ ] Design advanced modes
     [ ] mode "fix the equalization so that it matches the original"
     [ ] mode "identify which knobs were pushed"
+[ ] Add a README w/ links and stuffz
