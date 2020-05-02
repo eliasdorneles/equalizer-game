@@ -16,14 +16,14 @@ const connectEqualizerFilters = (source, bandFilters, destination) => {
 
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
 
-const isSameEqualization = (eq1, eq2) => {
+const isEqualizationEqual = (eq1, eq2) => {
   if (eq1.length !== 10) {
     throw Error(`Equalization array 1 has incorrect length: ${eq1.length}`)
   }
   if (eq2.length !== 10) {
     throw Error(`Equalization array 2 has incorrect length: ${eq2.length}`)
   }
-  for(let i = 0; i < 10; i++){
+  for (let i = 0; i < 10; i++) {
     if (eq1[i] !== eq2[i]) return false
   }
   return true
@@ -31,12 +31,15 @@ const isSameEqualization = (eq1, eq2) => {
 
 const generateAlternative = (givenEq) => {
   const candidate = givenEq.slice()
-  while (isSameEqualization(givenEq, candidate)) {
+  while (isEqualizationEqual(givenEq, candidate)) {
     candidate[getRandomInt(10)] = [-12, 0, 12][getRandomInt(3)]
     if (getRandomInt(5) === 0) {
       candidate[getRandomInt(10)] = [-12, 0, 12][getRandomInt(3)]
     }
     if (getRandomInt(6) === 0) {
+      candidate[getRandomInt(10)] = [-12, 0, 12][getRandomInt(3)]
+    }
+    if (getRandomInt(16) === 0) {
       candidate[getRandomInt(10)] = [-12, 0, 12][getRandomInt(3)]
     }
   }
@@ -50,8 +53,13 @@ const generateAlternativeEqualizations = (givenEq) => {
     generateAlternative(eqReset),
     generateAlternative(givenEq),
   ]
-  const areAllCandidatesDifferent = () => !(isSameEqualization(candidates[0], candidates[1]) || isSameEqualization(candidates[0], candidates[2]) || isSameEqualization(candidates[0], givenEq))
-  while(!areAllCandidatesDifferent()) {
+  const areAllCandidatesDifferent = () =>
+    !(
+      isEqualizationEqual(candidates[0], candidates[1]) ||
+      isEqualizationEqual(candidates[0], candidates[2]) ||
+      isEqualizationEqual(candidates[0], givenEq)
+    )
+  while (!areAllCandidatesDifferent()) {
     candidates = [
       generateAlternative(eqReset),
       generateAlternative(eqReset),
@@ -61,8 +69,7 @@ const generateAlternativeEqualizations = (givenEq) => {
   return candidates
 }
 
-const displayEqualization = (svgObject, equalization) => {
-  const svgDocument = svgObject.getSVGDocument()
+const displayEqualization = (svgDocument, equalization) => {
   const calcSliderPosition = (level) => {
     // these two constants come from the SVG file
     const positionY0 = 67
@@ -74,9 +81,13 @@ const displayEqualization = (svgObject, equalization) => {
     sliderKnob.setAttribute("y", calcSliderPosition(level).toString())
     // here we add the level as data attribute to the slider, so that we can later recover
     sliderKnob.setAttribute("data-level", level)
-  },
-  )
+  })
 }
+
+const getEqualizationFromSvgDocument = (svgDocument) =>
+  Array.from(svgDocument.getElementsByClassName("band-filter")).map((x) =>
+    parseInt(x.dataset.level),
+  )
 
 const newGame = () => {
   const equalizationBase = generateAlternative(eqReset)
@@ -85,7 +96,7 @@ const newGame = () => {
   alternatives.sort(() => Math.random() - 0.5) // shuffle
   return {
     currentEqualization: equalizationBase,
-    quizEqualizationOptions: alternatives
+    quizEqualizationOptions: alternatives,
   }
 }
 
@@ -129,23 +140,25 @@ const handleClickButtonChangeAudio = () => {
   audioFileSelector.classList.remove("d-none")
 }
 
-const handleClickSvgDocument = (svgDocument) => {
-  const eqClicked = Array.from(svgDocument.getElementsByClassName('band-filter')).map(x => parseInt(x.dataset.level))
-  if (isSameEqualization(game.currentEqualization, eqClicked)) {
-    console.log('Congrats! You did it!', eqClicked)
+const handleClickSvgDocument = (svgDocument, index) => {
+  const eqClicked = getEqualizationFromSvgDocument(svgDocument)
+  console.log("you clicked position", index)
+  if (isEqualizationEqual(game.currentEqualization, eqClicked)) {
+    console.log("Congrats! You did it!", eqClicked)
   } else {
     console.log("Oops! That's not it! Try again")
   }
 }
 
-const svgObjects = document.getElementsByTagName('object')
-for(let i = 0; i < svgObjects.length ;i++) {
-  const equalization = game.quizEqualizationOptions[i]
-  svgObjects[i].addEventListener('load', function(){
-    displayEqualization(this, equalization)
-    const svgDoc = svgObjects[i].getSVGDocument()
-    svgDoc.addEventListener('click', function(){
-      handleClickSvgDocument(this)
-    })
+const initSvgDocument = (svgDocument, index) => {
+  const equalization = game.quizEqualizationOptions[index]
+  displayEqualization(svgDocument, equalization)
+  svgDocument.addEventListener("click", function() {
+    handleClickSvgDocument(this, index)
   })
 }
+
+const svgObjects = Array.from(document.getElementsByTagName("object"))
+svgObjects.forEach((obj, i) =>
+  obj.addEventListener("load", () => initSvgDocument(obj.getSVGDocument(), i)),
+)
