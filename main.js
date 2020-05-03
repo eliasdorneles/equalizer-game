@@ -110,7 +110,6 @@ const generateNewGame = () => {
 const audioLibrary = [
   {
     file: "library/NiGiD_-_Funk_to_Blame.mp3",
-    description: "A funky track with drums, bass and guitars",
     title:
     '<a href="http://dig.ccmixter.org/files/NiGiD/58126">Funk to Blame</a> by <a href="http://beta.ccmixter.org/people/NiGiD">Martijn de Boer (NiGiD)</a> <small>(c) 2018 Licensed under a Creative Commons (CC BY-NC 3.0) license. Ft: unreal_dm</small>',
   },
@@ -118,14 +117,11 @@ const audioLibrary = [
     file: "library/magnatune_-_zargon_-_It_s_Alive_Below.mp3",
     title:
       '<strong>It\'s Alive Below</strong>, by <a href="http://beta.ccmixter.org/people/zargon">SoLaRiS</a>',
-    description: "A wild and heavy remix",
     title: `<a href="http://dig.ccmixter.org/files/zargon/1875">It's Alive Below</a> by <a href="http://beta.ccmixter.org/people/zargon">SoLaRiS</a> <small>(c) 2005 Licensed under a Creative Commons (CC BY-NC 2.5) license.</small>`,
   },
   {
     file: "library/white_noise.wav",
-    title: "White noise",
-    description:
-      "This is computer-generated <a href='https://en.wikipedia.org/wiki/White_noise'>white noise</a>, it's a good place to begin because you hear all frequencies",
+    title: "<a href='https://en.wikipedia.org/wiki/White_noise'>White noise</a>, a good place to begin because you hear all frequencies ;-)",
   },
 ]
 
@@ -177,6 +173,13 @@ const selectAudio = (audio) => {
   audioSelectionContainer.classList.add("d-none")
 }
 
+audioLibrary.forEach((audio, index) => {
+  const item = document.createElement('div')
+  item.innerHTML = `<button class="btn btn-primary btn-sm" onclick="selectAudio(audioLibrary[${index}])">Select</button> ${audio.title}`
+  uiLibraryContainer.appendChild(item)
+})
+selectAudio(audioLibrary[0])
+
 audioFileSelector.onchange = () => {
   const file = audioFileSelector.files[0]
   selectAudio({
@@ -204,8 +207,6 @@ const handleClickListenOriginal = () => {
 const handleClickButtonChangeAudio = () => {
   audioSelectionContainer.classList.remove("d-none")
 }
-
-selectAudio(audioLibrary[0])
 
 const setUIMessage = (message) => (quizUIMessage.innerHTML = message)
 const setUIMessageEq1 = (message) => (uiMessageEq1.innerHTML = message)

@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="/">Equalizer Game</a>
             </div>
@@ -16,20 +16,28 @@
 
         <div class="container">
             <div class="audio-source">
-                Audio: <strong id="uiAudioSourceTitle"></strong>
-                <button class="btn btn-link btn-sm" onclick="handleClickButtonChangeAudio()">
-                  (click here to change audio)
-                </button>
-
-                <div id="audioSelectionContainer" class="d-none">
-                  <input id="audioFileSelector" type="file" accept="audio/*" />
-                </div>
+                Audio: <strong id="uiAudioSourceTitle" class="ui-audio-title"></strong>
             </div>
 
             <div>
                 <audio id="equalizedAudioPlayer" controls loop>
                     <p>Your browser doesn't support HTML5 audio, the game won't work =(</p>
                 </audio>
+                <button class="btn btn-secondary btn-sm d-block" onclick="handleClickButtonChangeAudio()">
+                    Change Audio
+                </button>
+
+                <div id="audioSelectionContainer" class="d-none">
+                    <p>
+                        Upload an audio file:
+                        <input id="audioFileSelector" type="file" accept="audio/*" />
+                    </p>
+                    <p>
+                        Or choose from the library:
+                        <div id="uiLibraryContainer"></div>
+                    </p>
+                    <button class="btn btn-secondary" onclick="audioSelectionContainer.classList.add('d-none')">Cancel</button>
+                </div>
             </div>
 
             <button

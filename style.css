@@ -28,3 +28,8 @@ object {
 .svg-equalizer-clickable:hover {
   border-color: #faa123;
 }
+
+.ui-audio-title small, #uiLibraryContainer small {
+  font-size: 60%;
+  display: block
+}
