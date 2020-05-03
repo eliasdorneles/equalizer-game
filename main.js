@@ -159,6 +159,10 @@ const bandFilters = EQ_FREQUENCIES.map((freq) => createBandFilter(audioContext, 
 const source = audioContext.createMediaElementSource(equalizedAudioPlayer)
 connectEqualizerFilters(source, bandFilters, audioContext.destination)
 
+// needed to fix playback on Chrome/webkit
+// https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
+equalizedAudioPlayer.addEventListener('play', () => { audioContext.resume() })
+
 const applyEqualizationToAudio = (equalization) =>
   bandFilters.forEach((filter, i) => (filter.gain.value = equalization[i]))
 
