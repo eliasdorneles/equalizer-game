@@ -112,14 +112,14 @@ const audioLibrary = [
     file: "library/NiGiD_-_Funk_to_Blame.mp3",
     description: "A funky track with drums, bass and guitars",
     title:
-    '<a href="http://dig.ccmixter.org/files/NiGiD/58126">Funk to Blame</a> by <a href="http://beta.ccmixter.org/people/NiGiD">Martijn de Boer (NiGiD)</a><p><small>(c) 2018 Licensed under a Creative Commons (CC BY-NC 3.0) license. Ft: unreal_dm</small></p>',
+    '<a href="http://dig.ccmixter.org/files/NiGiD/58126">Funk to Blame</a> by <a href="http://beta.ccmixter.org/people/NiGiD">Martijn de Boer (NiGiD)</a> <small>(c) 2018 Licensed under a Creative Commons (CC BY-NC 3.0) license. Ft: unreal_dm</small>',
   },
   {
     file: "library/magnatune_-_zargon_-_It_s_Alive_Below.mp3",
     title:
       '<strong>It\'s Alive Below</strong>, by <a href="http://beta.ccmixter.org/people/zargon">SoLaRiS</a>',
     description: "A wild and heavy remix",
-    title: `<a href="http://dig.ccmixter.org/files/zargon/1875">It's Alive Below</a> by <a href="http://beta.ccmixter.org/people/zargon">SoLaRiS</a><p><small>(c) 2005 Licensed under a Creative Commons (CC BY-NC 2.5) license.</small></p>`,
+    title: `<a href="http://dig.ccmixter.org/files/zargon/1875">It's Alive Below</a> by <a href="http://beta.ccmixter.org/people/zargon">SoLaRiS</a> <small>(c) 2005 Licensed under a Creative Commons (CC BY-NC 2.5) license.</small>`,
   },
   {
     file: "library/white_noise.wav",
@@ -303,6 +303,8 @@ const newGame = () => {
 }
 
 const svgObjects = Array.from(document.getElementsByTagName("object"))
-svgObjects.forEach((obj, i) =>
-  obj.addEventListener("load", () => initSvgEqualizer(obj.getSVGDocument(), i)),
-)
+window.addEventListener('load', () => {
+  svgObjects.forEach((obj, i) =>
+    initSvgEqualizer(obj.getSVGDocument(), i)
+  )
+})
