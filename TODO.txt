@@ -13,7 +13,7 @@
     [x] if the user answer correctly:
         [x] tell them they got it right
         [x] hide all other equalizations, displaying the correct one
-    [o] if the user answer incorrectly:
+    [x] if the user answer incorrectly:
         [x] tell them that's not the right one
         [x] display the correct one, and their choice
         [x] let them switch between listening to the original, the correct one and their answer
@@ -21,8 +21,12 @@
         [ ] increase the score when they got it right
         [ ] count attempts and right answers
 [x] Add an option to generate a new equalization
-[ ] Let user select between a few presets
-    [ ] have a White Noise preset
+[x] Let user select between a few presets
+    [x] figure out how to show a preset with licensing
+    [x] show the options for user, have a White Noise preset
+[o] Make it work in mobile
+    [x] Firefox
+    [ ] Chrome
 [ ] Display the waveform with wavesurfer-js
 [ ] Save answers score locally, so that we don't lose it on refresh
 [ ] Design advanced modes
