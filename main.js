@@ -194,19 +194,13 @@ audioFileSelector.onchange = () => {
 }
 
 const handleClickListenEQVersion = () => {
+  equalizedAudioPlayer.play()
   applyEqualizationToAudio(game.currentEqualization)
-  if (game.state !== GameStates.PAUSED) {
-    buttonListenEq.classList.add("d-none")
-  }
-  buttonListenOriginal.classList.remove("d-none")
 }
 
 const handleClickListenOriginal = () => {
+  equalizedAudioPlayer.play()
   applyEqualizationToAudio(eqReset)
-  buttonListenEq.classList.remove("d-none")
-  if (game.state !== GameStates.PAUSED) {
-    buttonListenOriginal.classList.add("d-none")
-  }
 }
 
 const handleClickButtonChangeAudio = () => {
@@ -216,7 +210,6 @@ const handleClickButtonChangeAudio = () => {
 const setUIMessage = (message) => (quizUIMessage.innerHTML = message)
 const setUIMessageEq1 = (message) => (uiMessageEq1.innerHTML = message)
 const setUIMessageEq2 = (message) => (uiMessageEq2.innerHTML = message)
-const setAdditionalButtons = (message) => (uiAdditionalButtons.innerHTML = message)
 
 const handleCorrectAnswer = (indexAnswer) => {
   setUIMessage('<strong class="text-success">You got it right!</strong>')
@@ -247,16 +240,16 @@ const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
   eq1.classList.add("svg-equalizer-correct")
   eq1.classList.remove("d-none")
 
-  setUIMessageEq2("You answered:")
+  setUIMessageEq2(
+    `You answered: <button class="btn btn-sm btn-warning" onclick="applyEqualizationToAudio(${JSON.stringify(
+      guessedEqualization,
+    )})">Listen</button>`,
+  
+  )
   const eq2 = svgObjects[1]
   displayEqualization(eq2.getSVGDocument(), guessedEqualization)
   eq2.classList.add("svg-equalizer-incorrect")
   eq2.classList.remove("d-none")
-  setAdditionalButtons(
-    `<button class="btn btn-sm btn-outline-warning" onclick="applyEqualizationToAudio(${JSON.stringify(
-      guessedEqualization,
-    )})">Listen your answer</button>`,
-  )
 }
 
 const handleClickAnswer = (svgDocument, index) => {
@@ -302,7 +295,6 @@ const newGame = () => {
     obj.classList.remove("svg-equalizer-correct")
     setUIMessageEq1("")
     setUIMessageEq2("")
-    setAdditionalButtons("")
     buttonNewGame.classList.add("d-none")
     setUIMessage("Can you tell which equalizer is being applied?")
   })

@@ -23,7 +23,7 @@
                 <audio id="equalizedAudioPlayer" controls loop>
                     <p>Your browser doesn't support HTML5 audio, the game won't work =(</p>
                 </audio>
-                <button class="btn btn-secondary btn-sm d-block" onclick="handleClickButtonChangeAudio()">
+                <button class="btn btn-outline-info btn-sm d-block" onclick="handleClickButtonChangeAudio()">
                     Change Audio
                 </button>
 
@@ -41,20 +41,19 @@
             </div>
 
             <button
+                class="btn btn-primary"
+                id="buttonListenOriginal"
+                onclick="handleClickListenOriginal()"
+            >
+                Listen to the original
+            </button>
+            <button
                 class="btn btn-success"
                 id="buttonListenEq"
                 onclick="handleClickListenEQVersion()"
             >
                 Listen to the EQ-version
             </button>
-            <button
-                class="btn btn-secondary d-none"
-                id="buttonListenOriginal"
-                onclick="handleClickListenOriginal()"
-            >
-                Listen to the original
-            </button>
-            <span id="uiAdditionalButtons"></span>
             <div class="quiz-options">
                 <p id="quizUIMessage">Can you tell which equalizer is being applied?</p>
                 <div style="display: inline-block">
@@ -68,7 +67,7 @@
                 <object class="svg-equalizer" data="equalizer.svg" type="image/svg+xml"></object>
                 <object class="svg-equalizer" data="equalizer.svg" type="image/svg+xml"></object>
             </div>
-            <button id="buttonNewGame" class="btn btn-success d-none" onclick="newGame()">Give me another</button>
+            <button id="buttonNewGame" class="btn btn-success btn-lg d-none" onclick="newGame()">Give me another</button>
         </div>
         <script src="main.js"></script>
     </body>
