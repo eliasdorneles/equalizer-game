@@ -178,6 +178,8 @@ const selectAudio = (audio) => {
   audioSelectionContainer.classList.add("d-none")
 }
 
+const playAudio = () => equalizedAudioPlayer.play()
+
 audioLibrary.forEach((audio, index) => {
   const item = document.createElement('div')
   item.innerHTML = `<button class="btn btn-primary btn-sm" onclick="selectAudio(audioLibrary[${index}])">Select</button> ${audio.title}`
@@ -194,13 +196,13 @@ audioFileSelector.onchange = () => {
 }
 
 const handleClickListenEQVersion = () => {
-  equalizedAudioPlayer.play()
   applyEqualizationToAudio(game.currentEqualization)
+  playAudio()
 }
 
 const handleClickListenOriginal = () => {
-  equalizedAudioPlayer.play()
   applyEqualizationToAudio(eqReset)
+  playAudio()
 }
 
 const handleClickButtonChangeAudio = () => {
@@ -243,7 +245,7 @@ const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
   setUIMessageEq2(
     `You answered: <button class="btn btn-sm btn-warning" onclick="applyEqualizationToAudio(${JSON.stringify(
       guessedEqualization,
-    )})">Listen</button>`,
+    )}); playAudio()">Listen</button>`,
   
   )
   const eq2 = svgObjects[1]
