@@ -129,26 +129,19 @@ const audioLibrary = [
 const _eventHandlers = {}
 
 const addListener = (node, event, handler, capture = false) => {
-  if (!(node in _eventHandlers)) {
-    _eventHandlers[node] = {}
+  if (!(event in _eventHandlers)) {
+    _eventHandlers[event] = []
   }
-  if (!(event in _eventHandlers[node])) {
-    _eventHandlers[node][event] = []
-  }
-  _eventHandlers[node][event].push([handler, capture])
+  _eventHandlers[event].push({ node: node, handler: handler, capture: capture })
   node.addEventListener(event, handler, capture)
 }
 
-const removeAllListeners = (node, event) => {
-  if (node in _eventHandlers) {
-    if (event in _eventHandlers[node]) {
-      for (let i = _eventHandlers[node][event].length; i--; ) {
-        const handler = _eventHandlers[node][event][i]
-        node.removeEventListener(event, handler[0], handler[1])
-      }
-      _eventHandlers[node][event] = []
-    }
-  }
+const removeAllListeners = (targetNode, event) => {
+  _eventHandlers[event]
+    .filter(({ node }) => node === targetNode)
+    .forEach(({ node, handler, capture }) => node.removeEventListener(event, handler, capture))
+
+  _eventHandlers[event] = _eventHandlers[event].filter(({ node }) => node !== targetNode)
 }
 
 // Main starts here
