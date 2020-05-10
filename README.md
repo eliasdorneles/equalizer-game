@@ -18,4 +18,4 @@ License: BSD 3
 
 ## Screenshot
 
-  ![](screenshot.jpg)
+  ![](./screenshot.jpg)
