@@ -24,12 +24,13 @@
 [x] Let user select between a few presets
     [x] figure out how to show a preset with licensing
     [x] show the options for user, have a White Noise preset
-[o] Make it work in mobile
+[x] Make it work in mobile
     [x] Firefox
-    [ ] Chrome
+    [x] Chrome
+[ ] Check if it works in Safari
 [ ] Display the waveform with wavesurfer-js
 [ ] Save answers score locally, so that we don't lose it on refresh
 [ ] Design advanced modes
     [ ] mode "fix the equalization so that it matches the original"
     [ ] mode "identify which knobs were pushed"
-[ ] Add a README w/ links and stuffz
+[x] Add a README w/ links and stuffz
