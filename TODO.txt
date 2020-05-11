@@ -6,31 +6,25 @@
     - the equalization array will look like: [0, 0, 0, 0, 0, -12, 0, -12, 0, 12]
 [x] Let user upload the audio file
 [x] Clean UI: hide the option to upload audio file by default
-[o] Add a quiz for the correct equalization
-    [x] mock-up displaying an equalization in the screen
-    [x] generate alternative equalizations, from modified versions of the current one
-    [x] display question with the options in the UI
-    [x] if the user answer correctly:
-        [x] tell them they got it right
-        [x] hide all other equalizations, displaying the correct one
-    [x] if the user answer incorrectly:
-        [x] tell them that's not the right one
-        [x] display the correct one, and their choice
-        [x] let them switch between listening to the original, the correct one and their answer
-    [ ] Display an score
-        [ ] increase the score when they got it right
-        [ ] count attempts and right answers
+[x] Add a quiz for the correct equalization
 [x] Add an option to generate a new equalization
 [x] Let user select between a few presets
     [x] figure out how to show a preset with licensing
     [x] show the options for user, have a White Noise preset
-[x] Make it work in mobile
-    [x] Firefox
-    [x] Chrome
-[ ] Check if it works in Safari
-[ ] Display the waveform with wavesurfer-js
+[x] Make it work in mobile (Firefox and Chrome on Linux)
+[x] Add a README w/ links and stuffz
+[ ] Display an score
+    [ ] increase the score when they got it right
+    [ ] count attempts and right answers
+[ ] UI fix: add a "You're listening to ____" (the original/the EQ-version/your answer)
+[ ] UI bug: sometimes it shows up the "no change" twice
+[ ] Make sure it works in Safari
 [ ] Save answers score locally, so that we don't lose it on refresh
+[ ] Design beginner modes
+    - need to think about this, one idea is to group the handles (will need
+      to handle clipping)
+    - another idea is to add an equalizer just for exploring with it
 [ ] Design advanced modes
     [ ] mode "fix the equalization so that it matches the original"
     [ ] mode "identify which knobs were pushed"
-[x] Add a README w/ links and stuffz
+[ ] Consider displaying the waveform with wavesurfer-js (is this actually useful?)
