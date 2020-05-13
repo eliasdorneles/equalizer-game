@@ -163,6 +163,7 @@ const applyEqualizationToAudio = (equalization) =>
 const eqReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 let game = generateNewGame()
+let scoreHistory = [];
 
 // UI stuff
 const selectAudio = (audio) => {
@@ -249,13 +250,23 @@ const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
 
 const handleClickAnswer = (svgDocument, index) => {
   const eqClicked = getEqualizationFromSvgDocument(svgDocument)
-  if (isEqualizationEqual(game.currentEqualization, eqClicked)) {
+  const isCorrectAnswer = isEqualizationEqual(game.currentEqualization, eqClicked)
+  scoreHistory.push(isCorrectAnswer);
+  if (isCorrectAnswer) {
     handleCorrectAnswer(index)
   } else {
     handleIncorrectAnswer(index, eqClicked)
   }
   game.state = GameStates.PAUSED
   buttonNewGame.classList.remove("d-none")
+  console.log(scoreHistory);
+  displayScore(isCorrectAnswer);
+}
+
+const displayScore = (x) => {
+  const uiScoreSpan = document.createElement('span');
+  let uiScoreSpanColor = (x) ? 'correct-answer': 'wrong-answer';
+  document.querySelector('#uiScoreTracker').appendChild(uiScoreSpan).classList.add(uiScoreSpanColor);
 }
 
 // The equalizer is made to look clickable relying on CSS classes for the
