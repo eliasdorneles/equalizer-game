@@ -13,9 +13,8 @@
     [x] show the options for user, have a White Noise preset
 [x] Make it work in mobile (Firefox and Chrome on Linux)
 [x] Add a README w/ links and stuffz
-[ ] Display an score
-    [ ] increase the score when they got it right
-    [ ] count attempts and right answers
+[x] Display an score
+    [ ] reset the score when we change the audio
 [ ] UI fix: add a "You're listening to ____" (the original/the EQ-version/your answer)
 [ ] UI bug: sometimes it shows up the "no change" twice
 [ ] Make sure it works in Safari
