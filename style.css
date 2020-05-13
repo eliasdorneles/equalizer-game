@@ -33,3 +33,19 @@ object {
   font-size: 60%;
   display: block
 }
+
+#uiScoreTracker span {
+  display: inline-block; 
+  width: 20px; 
+  height: 20px; 
+  margin: 20px 10px 0 0; 
+  border: 1px solid #808080
+}
+
+.correct-answer {
+  background-color: #78cc78; 
+}
+
+.wrong-answer {
+  background-color: #f17a77;
+}
