@@ -59,7 +59,8 @@ const generateAlternativeEqualizations = (givenEq) => {
       isEqualizationEqual(candidates[0], candidates[2]) ||
       isEqualizationEqual(candidates[1], candidates[2]) ||
       isEqualizationEqual(candidates[0], givenEq) ||
-      isEqualizationEqual(candidates[1], givenEq)
+      isEqualizationEqual(candidates[1], givenEq) ||
+      isEqualizationEqual(candidates[2], givenEq)
     )
   while (!areAllCandidatesDifferent()) {
     candidates = [
