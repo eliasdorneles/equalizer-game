@@ -211,8 +211,6 @@ const handleClickButtonChangeAudio = () => {
 }
 
 const setUIMessage = (message) => (quizUIMessage.innerHTML = message)
-const setUIMessageEq1 = (message) => (uiMessageEq1.innerHTML = message)
-const setUIMessageEq2 = (message) => (uiMessageEq2.innerHTML = message)
 
 const handleCorrectAnswer = (indexAnswer) => {
   setUIMessage('<strong class="text-success">You got it right!</strong>')
