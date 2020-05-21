@@ -97,13 +97,14 @@ const GameStates = {
 }
 
 const generateNewGame = () => {
-  const equalizationBase = generateAlternative(eqReset)
-  const alternatives = generateAlternativeEqualizations(equalizationBase)
-  alternatives.push(equalizationBase)
+  const currentEQ = generateAlternative(eqReset)
+  const alternatives = generateAlternativeEqualizations(currentEQ)
+  alternatives.push(currentEQ)
   alternatives.sort(() => Math.random() - 0.5) // shuffle
   return {
-    currentEqualization: equalizationBase,
+    currentEqualization: currentEQ,
     quizEqualizationOptions: alternatives,
+    answerIndex: alternatives.findIndex((x) => isEqualizationEqual(x, currentEQ)),
     state: GameStates.PLAYING,
   }
 }
@@ -112,7 +113,7 @@ const audioLibrary = [
   {
     file: "library/NiGiD_-_Funk_to_Blame.mp3",
     title:
-    '<a href="http://dig.ccmixter.org/files/NiGiD/58126">Funk to Blame</a> by <a href="http://beta.ccmixter.org/people/NiGiD">Martijn de Boer (NiGiD)</a> <small>(c) 2018 Licensed under a Creative Commons (CC BY-NC 3.0) license. Ft: unreal_dm</small>',
+      '<a href="http://dig.ccmixter.org/files/NiGiD/58126">Funk to Blame</a> by <a href="http://beta.ccmixter.org/people/NiGiD">Martijn de Boer (NiGiD)</a> <small>(c) 2018 Licensed under a Creative Commons (CC BY-NC 3.0) license. Ft: unreal_dm</small>',
   },
   {
     file: "library/magnatune_-_zargon_-_It_s_Alive_Below.mp3",
@@ -122,7 +123,8 @@ const audioLibrary = [
   },
   {
     file: "library/white_noise.wav",
-    title: "<a href='https://en.wikipedia.org/wiki/White_noise'>White noise</a>, a good place to begin because you hear all frequencies ;-)",
+    title:
+      "<a href='https://en.wikipedia.org/wiki/White_noise'>White noise</a>, a good place to begin because you hear all frequencies ;-)",
   },
 ]
 
@@ -155,8 +157,12 @@ connectEqualizerFilters(source, bandFilters, audioContext.destination)
 
 // needed to fix playback on Chrome/webkit
 // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
-equalizedAudioPlayer.addEventListener('play', () => { audioContext.resume() })
-document.body.addEventListener('click', () => { audioContext.resume() })
+equalizedAudioPlayer.addEventListener("play", () => {
+  audioContext.resume()
+})
+document.body.addEventListener("click", () => {
+  audioContext.resume()
+})
 
 const applyEqualizationToAudio = (equalization) =>
   bandFilters.forEach((filter, i) => (filter.gain.value = equalization[i]))
@@ -164,7 +170,7 @@ const applyEqualizationToAudio = (equalization) =>
 const eqReset = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 let game = generateNewGame()
-let scoreHistory = [];
+let scoreHistory = []
 
 // UI stuff
 const selectAudio = (audio) => {
@@ -176,7 +182,7 @@ const selectAudio = (audio) => {
 const playAudio = () => equalizedAudioPlayer.play()
 
 audioLibrary.forEach((audio, index) => {
-  const item = document.createElement('div')
+  const item = document.createElement("div")
   item.innerHTML = `<button class="btn btn-primary btn-sm" onclick="selectAudio(audioLibrary[${index}])">Select</button> ${audio.title}`
   uiLibraryContainer.appendChild(item)
 })
@@ -213,61 +219,67 @@ const handleCorrectAnswer = (indexAnswer) => {
   svgObjects.forEach((obj, i) => {
     removeAllListeners(obj.getSVGDocument(), "click")
     removeClickableLook(i)
-    if (i !== indexAnswer) {
-      obj.classList.add("d-none")
+
+    if (i === indexAnswer) {
+      obj.classList.add("svg-equalizer-correct")
     }
   })
 }
 
-const handleIncorrectAnswer = (indexIncorrectAnswer, guessedEqualization) => {
+// TODO: this is ugly, i should replace this by an EqualizerQuizOption class
+// that encapsulates the functionality of displaying / clicking / etc
+const setOptionMessageDiv = (svgObj, content) => {
+  svgObj.parentNode.getElementsByClassName("option-message")[0].innerHTML = content
+}
+
+const handleIncorrectAnswer = (indexClicked, indexAnswer, guessedEqualization) => {
   setUIMessage("<span class='text-danger'>Oops! That's not it!</span>")
   svgObjects.forEach((obj, i) => {
     const svgDoc = obj.getSVGDocument()
     removeAllListeners(svgDoc, "click")
     removeClickableLook(i)
-    obj.classList.add("d-none")
+
+    if (i === indexClicked) {
+      // we're handling the incorrect answer
+      obj.classList.add("svg-equalizer-incorrect")
+      setOptionMessageDiv(
+        obj,
+        `You answered: <button class="btn btn-sm btn-warning" onclick="applyEqualizationToAudio(${JSON.stringify(
+          guessedEqualization,
+        )}); playAudio()">Listen</button>`,
+      )
+    } else if (i === indexAnswer) {
+      // this is the answer
+      obj.classList.add("svg-equalizer-correct")
+    }
   })
 
   buttonListenOriginal.classList.remove("d-none")
   buttonListenEq.classList.remove("d-none")
-
-  setUIMessageEq1("The correct one is:")
-  const eq1 = svgObjects[0]
-  displayEqualization(eq1.getSVGDocument(), game.currentEqualization)
-  eq1.classList.add("svg-equalizer-correct")
-  eq1.classList.remove("d-none")
-
-  setUIMessageEq2(
-    `You answered: <button class="btn btn-sm btn-warning" onclick="applyEqualizationToAudio(${JSON.stringify(
-      guessedEqualization,
-    )}); playAudio()">Listen</button>`,
-  
-  )
-  const eq2 = svgObjects[1]
-  displayEqualization(eq2.getSVGDocument(), guessedEqualization)
-  eq2.classList.add("svg-equalizer-incorrect")
-  eq2.classList.remove("d-none")
 }
 
 const handleClickAnswer = (svgDocument, index) => {
   const eqClicked = getEqualizationFromSvgDocument(svgDocument)
-  const isCorrectAnswer = isEqualizationEqual(game.currentEqualization, eqClicked)
-  scoreHistory.push(isCorrectAnswer);
+  const isCorrectAnswer = index === game.answerIndex
+  scoreHistory.push(isCorrectAnswer)
   if (isCorrectAnswer) {
     handleCorrectAnswer(index)
   } else {
-    handleIncorrectAnswer(index, eqClicked)
+    handleIncorrectAnswer(index, game.answerIndex, eqClicked)
   }
   game.state = GameStates.PAUSED
   buttonNewGame.classList.remove("d-none")
-  console.log(scoreHistory);
-  displayScore(isCorrectAnswer);
+  console.log(scoreHistory)
+  displayScore(isCorrectAnswer)
 }
 
 const displayScore = (x) => {
-  const uiScoreSpan = document.createElement('span');
-  let uiScoreSpanColor = (x) ? 'correct-answer': 'wrong-answer';
-  document.querySelector('#uiScoreTracker').appendChild(uiScoreSpan).classList.add(uiScoreSpanColor);
+  const uiScoreSpan = document.createElement("span")
+  let uiScoreSpanColor = x ? "correct-answer" : "wrong-answer"
+  document
+    .querySelector("#uiScoreTracker")
+    .appendChild(uiScoreSpan)
+    .classList.add(uiScoreSpanColor)
 }
 
 // The equalizer is made to look clickable relying on CSS classes for the
@@ -300,16 +312,13 @@ const newGame = () => {
     obj.classList.remove("d-none")
     obj.classList.remove("svg-equalizer-incorrect")
     obj.classList.remove("svg-equalizer-correct")
-    setUIMessageEq1("")
-    setUIMessageEq2("")
     buttonNewGame.classList.add("d-none")
+    setOptionMessageDiv(obj, "")
     setUIMessage("Can you tell which equalizer is being applied?")
   })
 }
 
 const svgObjects = Array.from(document.getElementsByTagName("object"))
-window.addEventListener('load', () => {
-  svgObjects.forEach((obj, i) =>
-    initSvgEqualizer(obj.getSVGDocument(), i)
-  )
+window.addEventListener("load", () => {
+  svgObjects.forEach((obj, i) => initSvgEqualizer(obj.getSVGDocument(), i))
 })
